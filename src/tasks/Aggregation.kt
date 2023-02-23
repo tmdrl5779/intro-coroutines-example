@@ -14,5 +14,12 @@ TODO: Write aggregation code.
  The corresponding test can be found in test/tasks/AggregationKtTest.kt.
  You can use 'Navigate | Test' menu action (note the shortcut) to navigate to the test.
 */
-fun List<User>.aggregate(): List<User> =
-    this
+
+//같은 사람 중복 개수 합치기
+fun List<User>.aggregate(): List<User> {
+    return groupBy { it.login }
+        .map { (login, users) ->
+            User(login, users.sumOf { user -> user.contributions })
+        }
+        .sortedByDescending { it.contributions }
+}
